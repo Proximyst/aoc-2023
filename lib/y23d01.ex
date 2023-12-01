@@ -59,18 +59,14 @@ defmodule Year2023.Day01.Part2 do
   defp parse_digits(<<>>, acc), do: acc
   defp parse_digits(line), do: parse_digits(line, [])
 
-  defp last(_, [head | tail]), do: last(head, tail)
-  defp last(i, []), do: i
-  defp last(list), do: last(:none, list)
-  defp first_last(list), do: [hd(list), last(list)]
+  defp first_last(list), do: [List.first(list), List.last(list)]
 
   defp parse_line(input) do
     input
     |> parse_digits()
     |> first_last()
     |> Enum.reverse()
-    |> Enum.join("")
-    |> String.to_integer()
+    |> Integer.undigits()
   end
 
   def solve(input) do
