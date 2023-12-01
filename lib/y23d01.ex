@@ -5,29 +5,16 @@ defmodule Year2023.Day01.Part1 do
     |> Enum.map(&parse_line/1)
   end
 
-  defp is_digit_str("1"), do: true
-  defp is_digit_str("2"), do: true
-  defp is_digit_str("3"), do: true
-  defp is_digit_str("4"), do: true
-  defp is_digit_str("5"), do: true
-  defp is_digit_str("6"), do: true
-  defp is_digit_str("7"), do: true
-  defp is_digit_str("8"), do: true
-  defp is_digit_str("9"), do: true
-  defp is_digit_str(_), do: false
-
-  defp last(_, [head | tail]), do: last(head, tail)
-  defp last(i, []), do: i
-  defp last(list), do: last(:none, list)
-  defp first_last(list), do: [hd(list), last(list)]
+  defp first_last(list), do: [List.first(list), List.last(list)]
 
   defp parse_line(input) do
     input
     |> String.codepoints()
-    |> Enum.filter(&is_digit_str/1)
+    |> Enum.map(&Integer.parse/1)
+    |> Enum.reject(fn x -> x == :error end)
+    |> Enum.map(fn {x, _} -> x end)
     |> first_last()
-    |> Enum.join("")
-    |> String.to_integer()
+    |> Integer.undigits()
   end
 
   def solve(input) do
@@ -43,6 +30,8 @@ defmodule Year2023.Day01.Part2 do
     |> Enum.map(&parse_line/1)
   end
 
+  # I've tried writing this as a nicer Enum.find_index and all, but this is just
+  # simply the clearest & easiest to read.
   defp parse_digit(<<"1", _::binary>>, acc), do: [1 | acc]
   defp parse_digit(<<"2", _::binary>>, acc), do: [2 | acc]
   defp parse_digit(<<"3", _::binary>>, acc), do: [3 | acc]
